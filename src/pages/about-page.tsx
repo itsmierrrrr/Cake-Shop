@@ -1,5 +1,6 @@
 import { PageTransition } from '@/components/common/page-transition'
 import { useDocumentTitle } from '@/hooks/use-document-title'
+import kitchen from '@/assets/purple.png'
 
 const processSteps = [
   {
@@ -34,7 +35,7 @@ export function AboutPage() {
           </p>
         </div>
         <img
-          src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1400&q=80"
+          src={kitchen}
           alt="Bakery interior with cake displays"
           loading="lazy"
           className="h-72 w-full rounded-3xl object-cover"
