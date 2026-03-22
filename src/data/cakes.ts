@@ -15,7 +15,7 @@ export const cakes: Cake[] = [
       'A soft red velvet layered with cloud-light mascarpone cream and hand-piped rose petals in blush tones.',
     ingredients: ['Red velvet sponge', 'Mascarpone cream', 'Raspberry compote', 'Vanilla bean syrup'],
     images: [
-      'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1602630209855-dceac223adfe?q=80&w=1173&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1200&q=80',
     ],
@@ -55,7 +55,7 @@ export const cakes: Cake[] = [
       'An indulgent party favorite with toasted hazelnut biscuit and drips of amber caramel over whipped chantilly.',
     ingredients: ['Hazelnut sponge', 'Salted caramel', 'Chantilly cream', 'Roasted hazelnuts'],
     images: [
-      'https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1619867994225-724b17475220?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       'https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80',
     ],
@@ -75,7 +75,7 @@ export const cakes: Cake[] = [
       'A bright seasonal cake with lemon-orange aromas and floral cream for breezy spring celebrations.',
     ingredients: ['Lemon sponge', 'Orange zest syrup', 'Whipped cream', 'Candied citrus peel'],
     images: [
-      'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=1200&q=80',
+      'https://plus.unsplash.com/premium_photo-1714942934723-118f2b4dd6dc?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1200&q=80',
     ],
@@ -94,7 +94,7 @@ export const cakes: Cake[] = [
       'A delicate small-format cake ideal for intimate gifting, topped with rose petals and pistachio crumble.',
     ingredients: ['Pistachio sponge', 'Rose whipped cream', 'Pistachio praline', 'Honey glaze'],
     images: [
-      'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1702745284678-2ae974a7f0aa?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       'https://images.unsplash.com/photo-1464306076886-da185f6a9d05?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80',
     ],
@@ -113,7 +113,7 @@ export const cakes: Cake[] = [
       'A moody premium showpiece featuring glossy noir ganache and rich layers balanced by espresso bitterness.',
     ingredients: ['Cocoa sponge', 'Espresso syrup', 'Dark ganache', 'Chocolate curls'],
     images: [
-      'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1626263468007-a9e0cf83f1ac?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       'https://images.unsplash.com/photo-1461009683693-342af2f2d6ce?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=1200&q=80',
     ],
@@ -133,7 +133,7 @@ export const cakes: Cake[] = [
       'An Instagram-ready birthday cake with playful pastel confetti and piped rosettes for joyful moments.',
     ingredients: ['Vanilla sponge', 'Buttercream', 'Sprinkles', 'White chocolate drizzle'],
     images: [
-      'https://images.unsplash.com/photo-1557925923-cd4648e211a0?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1535141192574-5d4897c12636?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1562440499-64c9a111f713?auto=format&fit=crop&w=1200&q=80',
     ],
@@ -152,7 +152,7 @@ export const cakes: Cake[] = [
       'A fluffy berry-forward cake loaded with seasonal strawberries and airy vanilla cream for light sweetness.',
     ingredients: ['Vanilla sponge', 'Fresh strawberries', 'Vanilla chantilly', 'Berry glaze'],
     images: [
-      'https://images.unsplash.com/photo-1587241321921-91a834d6d191?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1641848421644-a1603f016f51?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1626803775151-61d756612f97?auto=format&fit=crop&w=1200&q=80',
     ],
