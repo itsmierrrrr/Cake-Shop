@@ -11,7 +11,7 @@ export function Footer() {
 
         <div className="flex flex-wrap items-center gap-4 text-xs text-truffle/80 dark:text-[#f6dfd0]/80">
           <span className="inline-flex items-center gap-1">
-            <Phone size={12} /> 9969074083
+            <Phone size={12} /> 9897169420
           </span>
           <span className="inline-flex items-center gap-1">
             <Mail size={12} /> mihir.s.sawant17@gmail.com
