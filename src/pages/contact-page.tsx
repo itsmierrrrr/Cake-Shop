@@ -38,7 +38,7 @@ export function ContactPage() {
               <MapPin size={15} /> Malad West, Mumbai.
             </p>
             <p className="inline-flex items-center gap-2">
-              <Phone size={15} /> 9897169420
+              <Phone size={15} /> 989716942
             </p>
             <p className="inline-flex items-center gap-2">
               <Mail size={15} /> mihir.s.sawant17@gmail.com
