@@ -1,0 +1,197 @@
+import type { Cake, CakeReview } from '@/types/cake'
+
+export const cakes: Cake[] = [
+  {
+    id: '1',
+    name: 'Rose Velvet Bloom',
+    slug: 'rose-velvet-bloom',
+    price: 75,
+    rating: 4.9,
+    reviewCount: 126,
+    category: 'Signature',
+    flavor: 'Berry',
+    shortDescription: 'Red velvet sponge, whipped mascarpone, and raspberry glaze.',
+    description:
+      'A soft red velvet layered with cloud-light mascarpone cream and hand-piped rose petals in blush tones.',
+    ingredients: ['Red velvet sponge', 'Mascarpone cream', 'Raspberry compote', 'Vanilla bean syrup'],
+    images: [
+      'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1200&q=80',
+    ],
+    featured: true,
+  },
+  {
+    id: '2',
+    name: 'Vanilla Pearl Wedding',
+    slug: 'vanilla-pearl-wedding',
+    price: 130,
+    rating: 5,
+    reviewCount: 92,
+    category: 'Wedding',
+    flavor: 'Vanilla',
+    shortDescription: 'Three-tier vanilla bean elegance with ivory buttercream.',
+    description:
+      'Classic wedding beauty finished with sugar pearls and smooth ivory buttercream with subtle almond notes.',
+    ingredients: ['Vanilla sponge', 'Swiss meringue buttercream', 'Almond milk soak', 'White chocolate pearls'],
+    images: [
+      'https://images.unsplash.com/photo-1503525642560-ecca5e2e49e9?q=80&w=835&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1559620192-032c4bc4674e?auto=format&fit=crop&w=1200&q=80',
+    ],
+    featured: true,
+  },
+  {
+    id: '3',
+    name: 'Hazelnut Caramel Kiss',
+    slug: 'hazelnut-caramel-kiss',
+    price: 55,
+    rating: 4.8,
+    reviewCount: 88,
+    category: 'Celebration',
+    flavor: 'Caramel',
+    shortDescription: 'Toasted hazelnut sponge and silky salted caramel layers.',
+    description:
+      'An indulgent party favorite with toasted hazelnut biscuit and drips of amber caramel over whipped chantilly.',
+    ingredients: ['Hazelnut sponge', 'Salted caramel', 'Chantilly cream', 'Roasted hazelnuts'],
+    images: [
+      'https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80',
+    ],
+    featured: true,
+  },
+  {
+    id: '4',
+    name: 'Citrus Chantilly Dream',
+    slug: 'citrus-chantilly-dream',
+    price: 80,
+    rating: 4.7,
+    reviewCount: 64,
+    category: 'Seasonal',
+    flavor: 'Citrus',
+    shortDescription: 'Lemon sponge, orange zest syrup, and whipped chantilly.',
+    description:
+      'A bright seasonal cake with lemon-orange aromas and floral cream for breezy spring celebrations.',
+    ingredients: ['Lemon sponge', 'Orange zest syrup', 'Whipped cream', 'Candied citrus peel'],
+    images: [
+      'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1200&q=80',
+    ],
+  },
+  {
+    id: '5',
+    name: 'Pistachio Garden Mini',
+    slug: 'pistachio-garden-mini',
+    price: 45,
+    rating: 4.6,
+    reviewCount: 39,
+    category: 'Mini',
+    flavor: 'Pistachio',
+    shortDescription: 'Mini pistachio cake with rose cream and crushed nuts.',
+    description:
+      'A delicate small-format cake ideal for intimate gifting, topped with rose petals and pistachio crumble.',
+    ingredients: ['Pistachio sponge', 'Rose whipped cream', 'Pistachio praline', 'Honey glaze'],
+    images: [
+      'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1464306076886-da185f6a9d05?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80',
+    ],
+  },
+  {
+    id: '6',
+    name: 'Dark Cocoa Noir ',
+    slug: 'dark-cocoa-noir',
+    price: 60,
+    rating: 4.9,
+    reviewCount: 101,
+    category: 'Signature',
+    flavor: 'Chocolate',
+    shortDescription: 'Dark chocolate ganache with espresso-infused sponge.',
+    description:
+      'A moody premium showpiece featuring glossy noir ganache and rich layers balanced by espresso bitterness.',
+    ingredients: ['Cocoa sponge', 'Espresso syrup', 'Dark ganache', 'Chocolate curls'],
+    images: [
+      'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1461009683693-342af2f2d6ce?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=1200&q=80',
+    ],
+    featured: true,
+  },
+  {
+    id: '7',
+    name: 'Birthday Confetti Swirl',
+    slug: 'birthday-confetti-swirl',
+    price: 80,
+    rating: 4.5,
+    reviewCount: 57,
+    category: 'Celebration',
+    flavor: 'Vanilla',
+    shortDescription: 'Classic vanilla with pastel confetti and buttercream rosettes.',
+    description:
+      'An Instagram-ready birthday cake with playful pastel confetti and piped rosettes for joyful moments.',
+    ingredients: ['Vanilla sponge', 'Buttercream', 'Sprinkles', 'White chocolate drizzle'],
+    images: [
+      'https://images.unsplash.com/photo-1557925923-cd4648e211a0?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1535141192574-5d4897c12636?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1562440499-64c9a111f713?auto=format&fit=crop&w=1200&q=80',
+    ],
+  },
+  {
+    id: '8',
+    name: 'Strawberry Cream Cloud',
+    slug: 'strawberry-cream-cloud',
+    price: 50,
+    rating: 4.8,
+    reviewCount: 73,
+    category: 'Seasonal',
+    flavor: 'Berry',
+    shortDescription: 'Soft sponge with fresh strawberries and vanilla chantilly.',
+    description:
+      'A fluffy berry-forward cake loaded with seasonal strawberries and airy vanilla cream for light sweetness.',
+    ingredients: ['Vanilla sponge', 'Fresh strawberries', 'Vanilla chantilly', 'Berry glaze'],
+    images: [
+      'https://images.unsplash.com/photo-1587241321921-91a834d6d191?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1626803775151-61d756612f97?auto=format&fit=crop&w=1200&q=80',
+    ],
+    featured: true,
+  },
+]
+
+export const reviewsByCakeId: Record<string, CakeReview[]> = {
+  '1': [
+    {
+      id: 'r1',
+      name: 'Amelia',
+      rating: 5,
+      comment: 'The frosting was silky and not too sweet. Stunning centerpiece for our brunch.',
+      date: '2026-01-12',
+    },
+    {
+      id: 'r2',
+      name: 'Naomi',
+      rating: 5,
+      comment: 'Beautifully decorated and tasted even better than it looked.',
+      date: '2026-02-02',
+    },
+  ],
+  '6': [
+    {
+      id: 'r3',
+      name: 'Jaden',
+      rating: 4,
+      comment: 'Rich cocoa flavor with a smooth finish. Perfect with espresso.',
+      date: '2025-12-25',
+    },
+    {
+      id: 'r4',
+      name: 'Layla',
+      rating: 5,
+      comment: 'This cake is pure luxury. The ganache texture is incredible.',
+      date: '2026-02-17',
+    },
+  ],
+}
+
