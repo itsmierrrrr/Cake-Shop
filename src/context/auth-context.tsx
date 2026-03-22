@@ -20,6 +20,7 @@ type AuthContextValue = {
 
 const AUTH_STORAGE_KEY = 'velvet-auth-user'
 const AUTH_TOKEN_KEY = 'velvet-auth-token'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
 
 const AuthContext = createContext<AuthContextValue | null>(null)
 
@@ -73,7 +74,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       }
 
       try {
-        const response = await fetch('/api/auth/me', {
+        const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -99,7 +100,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }, [token])
 
   const signUp = async (name: string, email: string, password: string) => {
-    const response = await fetch('/api/auth/signup', {
+    const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -115,7 +116,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }
 
   const signIn = async (email: string, password: string) => {
-    const response = await fetch('/api/auth/signin', {
+    const response = await fetch(`${API_BASE_URL}/api/auth/signin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
