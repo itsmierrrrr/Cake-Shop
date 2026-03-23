@@ -67,7 +67,7 @@ export function HomePage() {
           transition={{ delay: 0.15 }}
         >
           <img
-            src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80"
+            src="https://plus.unsplash.com/premium_photo-1673792686366-27a26e9d5ea5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Featured boutique cake display"
             loading="lazy"
             className="h-[380px] w-full object-cover"
@@ -111,7 +111,7 @@ export function HomePage() {
 
       <section className="grid items-center gap-7 rounded-[2rem] border border-white/70 bg-white/65 p-6 md:grid-cols-2 md:p-9 dark:border-white/10 dark:bg-[#2a211d]/70">
         <img
-          src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?auto=format&fit=crop&w=1400&q=80"
+          src="https://images.unsplash.com/photo-1597528662465-55ece5734101?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Bakery team preparing cakes"
           loading="lazy"
           className="h-72 w-full rounded-3xl object-cover"
