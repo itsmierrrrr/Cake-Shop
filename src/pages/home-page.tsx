@@ -13,7 +13,7 @@ import { useDocumentTitle } from '@/hooks/use-document-title'
 const testimonials = [
   {
     name: 'Sophia M.',
-    note: 'Velvet Crumb made our engagement party unforgettable. Every detail was gorgeous.',
+    note: 'Royale Bakes made our engagement party unforgettable. Every detail was gorgeous.',
     rating: 5,
   },
   {

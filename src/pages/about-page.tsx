@@ -26,7 +26,7 @@ export function AboutPage() {
         <div className="space-y-3">
           <h1 className="section-title">Our Story</h1>
           <p className="section-copy">
-            Velvet Crumb started as a tiny studio kitchen and grew into a premium bakery known for
+            Royale Bakes started as a tiny studio kitchen and grew into a premium bakery known for
             elegant celebration cakes. We blend modern pastry technique with warm, handmade detail.
           </p>
           <p className="section-copy">

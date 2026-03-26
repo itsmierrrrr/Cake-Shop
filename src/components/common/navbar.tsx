@@ -29,7 +29,7 @@ export function Navbar() {
           </span>
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-truffle/70 dark:text-[#f6dfd0]/70">Patisserie</p>
-            <p className="text-lg font-semibold text-truffle dark:text-[#f6dfd0]">Velvet Crumb</p>
+            <p className="text-lg font-semibold text-truffle dark:text-[#f6dfd0]">Royale Bakes</p>
           </div>
         </Link>
 

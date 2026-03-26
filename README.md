@@ -1,4 +1,4 @@
-# Velvet Crumb - Premium Cake Shop Website
+# Royale Bakes - Premium Cake Shop Website
 
 A clean, modern cake shop web app built with React, TypeScript, Vite, Tailwind CSS, Framer Motion, and shadcn-style UI components.
 

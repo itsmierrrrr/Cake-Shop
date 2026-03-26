@@ -47,7 +47,7 @@ export function ContactPage() {
 
           <div className="overflow-hidden rounded-3xl border border-rose/30 dark:border-white/20">
             <iframe
-              title="Velvet Crumb bakery location"
+              title="Royale Bakes bakery location"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28653.619655826617!2d72.80210480511472!3d19.1887653504792!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b6914fe3a8e5%3A0x73f264109c4db9d4!2sMalad%2C%20Malad%20West%2C%20Mumbai%2C%20Maharashtra!5e1!3m2!1sen!2sin!4v1773939551030!5m2!1sen!2sin"
               className="h-[320px] w-full border-0"
               loading="lazy"
