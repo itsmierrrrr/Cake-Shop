@@ -48,7 +48,7 @@ export function ContactPage() {
           <div className="overflow-hidden rounded-3xl border border-rose/30 dark:border-white/20">
             <iframe
               title="Royale Bakes bakery location"
-              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d7285.364725596908!2d-74.52559964008351!3d24.052276509405953!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sin!4v1775329192421!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d8121.392292278071!2d0.37237243278947474!3d43.958989160474566!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1775329549202!5m2!1sen!2sin"
               className="h-[320px] w-full border-0"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
