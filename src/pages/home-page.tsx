@@ -35,7 +35,7 @@ const cakeMoments = [
     message:
       'From birthdays to cozy Sunday dinners, every slice brings smiles, stories, and little celebrations around the table.',
     image:
-      'https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?q=80&w=1170&auto=format&fit=crop',
+      'https://plus.unsplash.com/premium_photo-1691688119274-6ee514addca5?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     alt: 'Friends holding cake and celebrating together',
   },
   {
@@ -43,7 +43,7 @@ const cakeMoments = [
     message:
       'Our cakes are made to be shared with the people you love, turning simple gatherings into warm, unforgettable memories.',
     image:
-      'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=1170&auto=format&fit=crop',
+      'https://plus.unsplash.com/premium_photo-1737081099194-d0eef3c204e6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     alt: 'Family eating cake at a celebration',
   },
   {
@@ -51,7 +51,7 @@ const cakeMoments = [
     message:
       'Delicate layers, balanced sweetness, and elegant finishes made for happy hands, happy hearts, and happy photos.',
     image:
-      'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=80&w=1170&auto=format&fit=crop',
+      'https://plus.unsplash.com/premium_photo-1661762453267-9070859367ba?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     alt: 'Person presenting a decorated cake at a party',
   },
   {
@@ -59,7 +59,7 @@ const cakeMoments = [
     message:
       'A cake table becomes the heart of every celebration when friends gather, laugh, and share one more bite together.',
     image:
-      'https://images.unsplash.com/photo-1521302200778-33500795e128?q=80&w=1170&auto=format&fit=crop',
+      'https://plus.unsplash.com/premium_photo-1681841299989-3337e4ac51a0?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     alt: 'Friends eating cake together during a celebration',
   },
   {
@@ -67,7 +67,7 @@ const cakeMoments = [
     message:
       'From exam results to new beginnings, our cakes turn everyday milestones into meaningful moments worth remembering.',
     image:
-      'https://images.unsplash.com/photo-1558970859-2f4f2a6b0f7a?q=80&w=1170&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1772615071688-aefb82d82607?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     alt: 'People smiling while holding birthday cake',
   },
   {
@@ -75,7 +75,7 @@ const cakeMoments = [
     message:
       'Every handcrafted cake is designed to look stunning in your hands and even better when shared around your favorite people.',
     image:
-      'https://images.unsplash.com/photo-1518566585952-6e1fcd8f1a89?q=80&w=1170&auto=format&fit=crop',
+      'https://plus.unsplash.com/premium_photo-1661675916179-4f79e308d389?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     alt: 'Person holding a celebration cake with candles',
   },
 ]
