@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, Sparkles } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { PageTransition } from '@/components/common/page-transition'
@@ -28,10 +29,46 @@ const testimonials = [
   },
 ]
 
+const cakeMoments = [
+  {
+    title: 'Moments That Taste Like Joy',
+    message:
+      'From birthdays to cozy Sunday dinners, every slice brings smiles, stories, and little celebrations around the table.',
+    image:
+      'https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?q=80&w=1170&auto=format&fit=crop',
+    alt: 'Friends holding cake and celebrating together',
+  },
+  {
+    title: 'Baked for Togetherness',
+    message:
+      'Our cakes are made to be shared with the people you love, turning simple gatherings into warm, unforgettable memories.',
+    image:
+      'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=1170&auto=format&fit=crop',
+    alt: 'Family eating cake at a celebration',
+  },
+  {
+    title: 'Handcrafted Happiness',
+    message:
+      'Delicate layers, balanced sweetness, and elegant finishes made for happy hands, happy hearts, and happy photos.',
+    image:
+      'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=80&w=1170&auto=format&fit=crop',
+    alt: 'Person presenting a decorated cake at a party',
+  },
+]
+
 export function HomePage() {
   useDocumentTitle('Home')
 
   const featured = cakes.filter((cake) => cake.featured).slice(0, 4)
+  const [activeMoment, setActiveMoment] = useState(0)
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setActiveMoment((current) => (current + 1) % cakeMoments.length)
+    }, 4500)
+
+    return () => window.clearInterval(intervalId)
+  }, [])
 
   return (
     <PageTransition>
@@ -73,6 +110,60 @@ export function HomePage() {
             className="h-[380px] w-full object-cover"
           />
         </motion.div>
+      </section>
+
+      <section className="space-y-5">
+        <div>
+          <h2 className="section-title">Sweet Moments on Repeat</h2>
+          <p className="section-copy">
+            Cake stories from real celebrations, sliding by automatically every few seconds.
+          </p>
+        </div>
+
+        <div className="overflow-hidden rounded-[2rem] border border-white/70 bg-white/80 shadow-soft backdrop-blur-sm dark:border-white/10 dark:bg-[#2f2521]/80">
+          <div
+            className="flex transition-transform duration-700 ease-out"
+            style={{ transform: `translateX(-${activeMoment * 100}%)` }}
+          >
+            {cakeMoments.map((moment) => (
+              <article key={moment.title} className="grid min-w-full gap-4 p-4 md:grid-cols-2 md:gap-7 md:p-7">
+                <img
+                  src={moment.image}
+                  alt={moment.alt}
+                  loading="lazy"
+                  className="h-64 w-full rounded-3xl object-cover md:h-[320px]"
+                />
+                <div className="flex items-center">
+                  <div>
+                    <Badge className="mb-3">Cake Love Story</Badge>
+                    <h3 className="text-2xl leading-tight text-truffle dark:text-[#f6dfd0] md:text-4xl">
+                      {moment.title}
+                    </h3>
+                    <p className="mt-4 text-sm text-truffle/75 dark:text-[#f6dfd0]/75 md:text-base">
+                      {moment.message}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-center gap-2">
+          {cakeMoments.map((moment, idx) => (
+            <button
+              key={moment.title}
+              type="button"
+              aria-label={`Show slide ${idx + 1}`}
+              onClick={() => setActiveMoment(idx)}
+              className={`h-2.5 rounded-full transition-all ${
+                activeMoment === idx
+                  ? 'w-8 bg-cocoa dark:bg-[#f2cdb8]'
+                  : 'w-2.5 bg-cocoa/35 dark:bg-[#f2cdb8]/40'
+              }`}
+            />
+          ))}
+        </div>
       </section>
 
       <section className="space-y-5">
