@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, Sparkles } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Sparkles } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -54,6 +54,30 @@ const cakeMoments = [
       'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=80&w=1170&auto=format&fit=crop',
     alt: 'Person presenting a decorated cake at a party',
   },
+  {
+    title: 'Slices Shared, Memories Made',
+    message:
+      'A cake table becomes the heart of every celebration when friends gather, laugh, and share one more bite together.',
+    image:
+      'https://images.unsplash.com/photo-1521302200778-33500795e128?q=80&w=1170&auto=format&fit=crop',
+    alt: 'Friends eating cake together during a celebration',
+  },
+  {
+    title: 'Celebrate Every Little Win',
+    message:
+      'From exam results to new beginnings, our cakes turn everyday milestones into meaningful moments worth remembering.',
+    image:
+      'https://images.unsplash.com/photo-1558970859-2f4f2a6b0f7a?q=80&w=1170&auto=format&fit=crop',
+    alt: 'People smiling while holding birthday cake',
+  },
+  {
+    title: 'Sweetness You Can Hold',
+    message:
+      'Every handcrafted cake is designed to look stunning in your hands and even better when shared around your favorite people.',
+    image:
+      'https://images.unsplash.com/photo-1518566585952-6e1fcd8f1a89?q=80&w=1170&auto=format&fit=crop',
+    alt: 'Person holding a celebration cake with candles',
+  },
 ]
 
 export function HomePage() {
@@ -61,14 +85,15 @@ export function HomePage() {
 
   const featured = cakes.filter((cake) => cake.featured).slice(0, 4)
   const [activeMoment, setActiveMoment] = useState(0)
+  const totalMoments = cakeMoments.length
 
   useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setActiveMoment((current) => (current + 1) % cakeMoments.length)
-    }, 4500)
+    const timeoutId = window.setTimeout(() => {
+      setActiveMoment((current) => (current + 1) % totalMoments)
+    }, 3000)
 
-    return () => window.clearInterval(intervalId)
-  }, [])
+    return () => window.clearTimeout(timeoutId)
+  }, [activeMoment, totalMoments])
 
   return (
     <PageTransition>
@@ -149,7 +174,19 @@ export function HomePage() {
           </div>
         </div>
 
-        <div className="flex justify-center gap-2">
+        <div className="flex items-center justify-center gap-3">
+          <button
+            type="button"
+            aria-label="Show previous slide"
+            onClick={() =>
+              setActiveMoment((current) => (current - 1 + totalMoments) % totalMoments)
+            }
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-cocoa/20 bg-white/85 text-cocoa transition-colors hover:bg-white dark:border-[#f2cdb8]/25 dark:bg-[#2f2521]/80 dark:text-[#f2cdb8]"
+          >
+            <ArrowLeft size={16} />
+          </button>
+
+          <div className="flex justify-center gap-2">
           {cakeMoments.map((moment, idx) => (
             <button
               key={moment.title}
@@ -163,6 +200,16 @@ export function HomePage() {
               }`}
             />
           ))}
+          </div>
+
+          <button
+            type="button"
+            aria-label="Show next slide"
+            onClick={() => setActiveMoment((current) => (current + 1) % totalMoments)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-cocoa/20 bg-white/85 text-cocoa transition-colors hover:bg-white dark:border-[#f2cdb8]/25 dark:bg-[#2f2521]/80 dark:text-[#f2cdb8]"
+          >
+            <ArrowRight size={16} />
+          </button>
         </div>
       </section>
 
