@@ -1,97 +1,125 @@
-# Royale Bakes - Premium Cake Shop Website
+# Cake Shop Website
 
-A clean, modern cake shop web app built with React, TypeScript, Vite, Tailwind CSS, Framer Motion, and shadcn-style UI components.
+A modern cake shop web app with a React + Vite frontend and a lightweight Express + MongoDB auth API.
 
-## Tech Stack
+## Stack
 
-- React + Vite + TypeScript
+- React 19 + TypeScript + Vite
 - Tailwind CSS
-- Framer Motion
-- shadcn/ui-style reusable components
-- Lucide React icons
 - React Router
-- Sonner toast notifications
+- Framer Motion
+- Sonner (toast notifications)
+- Express + Mongoose + JWT for authentication
 
 ## Features
 
-- Premium pastel bakery UI with responsive design
-- Home, Shop, Product Details, Cart, Checkout, About, Contact pages
-- Product filtering by category, flavor, and max price
-- Cart functionality with quantity control and total calculation (Context API)
-- Dark and light mode toggle with localStorage persistence
-- Smooth route transitions and subtle hover animations
-- Loading skeleton states
-- Toast notifications for actions
-- Fake API-style cake data source
-- Lazy loaded images with hover zoom effect
-- MongoDB-backed authentication (Sign Up, Verify, Sign In)
-- Checkout protection: only verified users can place orders
+- Responsive storefront with Home, Shop, Product Details, Cart, Checkout, About, and Contact pages
+- Client-side filtering in shop (category, flavor, and max price)
+- Cart state management with Context API and quantity controls
+- Light and dark theme toggle with persistence
+- Route transition animations and loading skeletons
+- Auth flow with Sign Up, Sign In, and token-based session restore
+- Protected checkout route that redirects unauthenticated users to Sign In
+- Frontend product catalog from local data (`src/data/cakes.ts`)
 
-## Run Locally
+## Prerequisites
+
+- Node.js 18+
+- npm
+- MongoDB instance (local or hosted)
+
+## Setup
+
+1. Install dependencies:
 
 ```bash
 npm install
-npm run dev
 ```
 
-Open the local URL shown in the terminal.
-
-## Run With Auth + MongoDB
-
-1. Copy env template and set values:
+2. Create backend env file from template:
 
 ```bash
 copy .env.example .env
 ```
 
-2. Ensure MongoDB is running locally (or update `MONGODB_URI` in `.env` to your hosted MongoDB URL).
+3. Update `.env` values:
 
-3. Start both frontend and backend:
+- `MONGODB_URI` your MongoDB connection string
+- `JWT_SECRET` any strong secret value
+- `PORT` backend port (default `4000`)
+- `CLIENT_ORIGIN` frontend origin (default `http://localhost:5173`)
+
+4. Optional frontend env (`.env.local`):
+
+```bash
+VITE_API_URL=http://localhost:4000
+```
+
+If `VITE_API_URL` is not set, the frontend defaults to `http://localhost:4000`.
+
+## Run
+
+Start frontend only:
+
+```bash
+npm run dev
+```
+
+Start backend only:
+
+```bash
+npm run server
+```
+
+Start frontend + backend together:
 
 ```bash
 npm run dev:full
 ```
 
-4. Open `http://localhost:5173`.
+Frontend runs on `http://localhost:5173` and backend on `http://localhost:4000` by default.
 
-## Auth Flow
+## Available Scripts
 
-1. Click **Sign Up**.
-2. Submit name, email, and password.
-3. Enter the verification code.
-: In development, the code is returned by the API and shown via toast.
-4. Sign in.
-5. Access Checkout and place order.
+- `npm run dev` start Vite dev server
+- `npm run server` start Express server with nodemon
+- `npm run dev:full` run frontend and backend concurrently
+- `npm run build` type-check and build production assets
+- `npm run preview` preview built frontend
+- `npm run lint` run ESLint
 
-If a user is not verified, sign-in is blocked and checkout remains protected.
+## Auth API
 
-## Build
+Base URL: `http://localhost:4000/api/auth`
 
-```bash
-npm run build
-npm run preview
-```
+- `POST /signup` create user account
+- `POST /signin` authenticate and return JWT + user info
+- `GET /me` return current user (requires `Authorization: Bearer <token>`)
+
+Health check endpoint: `GET /api/health`
 
 ## Project Structure
 
 ```text
-src/
-  components/
-    common/
-    shop/
-    ui/
-  context/
-  data/
-  hooks/
-  lib/
-  pages/
-  types/
-  utils/
-  App.tsx
-  index.css
-  main.tsx
-server/
-  index.js
-  models/
-  routes/
+.
+|-- public/
+|-- server/
+|   |-- index.js
+|   |-- models/
+|   \-- routes/
+|-- src/
+|   |-- components/
+|   |   |-- common/
+|   |   |-- shop/
+|   |   \-- ui/
+|   |-- context/
+|   |-- data/
+|   |-- hooks/
+|   |-- lib/
+|   |-- pages/
+|   |-- types/
+|   \-- utils/
+|-- index.html
+|-- package.json
+\-- vite.config.ts
 ```
