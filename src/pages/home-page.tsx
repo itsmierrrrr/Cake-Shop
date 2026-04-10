@@ -139,7 +139,7 @@ export function HomePage() {
 
       <section className="space-y-5">
         <div>
-          <h2 className="section-title">Sweet Moments on Repeat</h2>
+          <h2 className="section-title">Sweet Moments</h2>
           <p className="section-copy">
             Cake stories from real celebrations, sliding by automatically every few seconds.
           </p>
