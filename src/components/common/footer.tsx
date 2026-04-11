@@ -1,4 +1,4 @@
-import { Instagram, Mail, Phone } from 'lucide-react'
+import { Instagram, Mail, Phone, Twitter, Pinterest } from 'lucide-react'
 
 export function Footer() {
   return (
@@ -9,16 +9,12 @@ export function Footer() {
           <p className="text-xs text-truffle/60 dark:text-[#f6dfd0]/60">Handcrafted with seasonal ingredients since 4000 BCE.</p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4 text-xs text-truffle/80 dark:text-[#f6dfd0]/80">
-          <span className="inline-flex items-center gap-1">
-            <Phone size={12} /> 9897169420
-          </span>
-          <span className="inline-flex items-center gap-1">
-            <Mail size={12} /> mihir.s.sawant17@gmail.com
-          </span>
-          <span className="inline-flex items-center gap-1">
-            <Instagram size={12} /> @mihir.s_
-          </span>
+        <div className="flex items-center gap-4 text-truffle/80 dark:text-[#f6dfd0]/80">
+          <Phone size={20} />
+          <Mail size={20} />
+          <Instagram size={20} />
+          <Twitter size={20} />
+          <Pinterest size={20} />
         </div>
       </div>
     </footer>
