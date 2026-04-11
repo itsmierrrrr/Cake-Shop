@@ -1,4 +1,5 @@
-import { Instagram, Mail, Phone, Twitter } from 'lucide-react'
+import { Instagram, Mail, Phone, Facebook } from 'lucide-react'
+import { FaXTwitter } from 'react-icons/fa6'
 
 export function Footer() {
   return (
@@ -10,10 +11,21 @@ export function Footer() {
         </div>
 
         <div className="flex items-center gap-4 text-truffle/80 dark:text-[#f6dfd0]/80">
-          <Phone size={20} />
-          <Mail size={20} />
-          <Instagram size={20} />
-          <Twitter size={20} />
+          <a href="tel:9897169420" className="transition-colors hover:text-truffle dark:hover:text-[#f6dfd0]">
+            <Phone size={20} />
+          </a>
+          <a href="mailto:mihir.s.sawant17@gmail.com" className="transition-colors hover:text-truffle dark:hover:text-[#f6dfd0]">
+            <Mail size={20} />
+          </a>
+          <a href="https://instagram.com/mihir.s_" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-truffle dark:hover:text-[#f6dfd0]">
+            <Instagram size={20} />
+          </a>
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-truffle dark:hover:text-[#f6dfd0]">
+            <FaXTwitter size={20} />
+          </a>
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-truffle dark:hover:text-[#f6dfd0]">
+            <Facebook size={20} />
+          </a>
         </div>
       </div>
     </footer>
