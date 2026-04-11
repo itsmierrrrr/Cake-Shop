@@ -1,4 +1,4 @@
-import { Instagram, Mail, Phone, Twitter, Pinterest } from 'lucide-react'
+import { Instagram, Mail, Phone, Twitter } from 'lucide-react'
 
 export function Footer() {
   return (
@@ -14,7 +14,6 @@ export function Footer() {
           <Mail size={20} />
           <Instagram size={20} />
           <Twitter size={20} />
-          <Pinterest size={20} />
         </div>
       </div>
     </footer>
