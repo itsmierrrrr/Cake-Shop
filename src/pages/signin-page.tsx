@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
+import { GoogleAuthButton } from '@/components/common/google-auth-button'
 import { PageTransition } from '@/components/common/page-transition'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -19,12 +20,53 @@ export function SignInPage() {
 
   const navigate = useNavigate()
   const location = useLocation()
-  const { isAuthenticated, user, signIn } = useAuth()
+  const { isAuthenticated, user, signIn, signInWithToken } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false)
 
   const state = location.state as RedirectState | null
   const redirectTo = state?.from?.pathname || '/'
+  const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const token = params.get('token')
+    const redirectFromQuery = params.get('redirect')
+    const provider = params.get('provider')
+    const error = params.get('error')
+
+    if (error) {
+      toast.error('Google sign-in failed. Please try again.')
+      navigate('/signin', { replace: true, state: location.state })
+      return
+    }
+
+    if (!token) {
+      return
+    }
+
+    const nextPath = redirectFromQuery?.startsWith('/') ? redirectFromQuery : redirectTo
+
+    const completeGoogleSignIn = async () => {
+      setIsGoogleLoading(true)
+
+      try {
+        await signInWithToken(token)
+        if (provider === 'google') {
+          toast.success('Signed in with Google.')
+        }
+        navigate(nextPath, { replace: true })
+      } catch {
+        toast.error('Unable to complete Google sign-in.')
+        navigate('/signin', { replace: true, state: location.state })
+      } finally {
+        setIsGoogleLoading(false)
+      }
+    }
+
+    void completeGoogleSignIn()
+  }, [location.search, location.state, navigate, redirectTo, signInWithToken])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -64,6 +106,19 @@ export function SignInPage() {
           <Button type="submit" className="w-full">
             Sign In
           </Button>
+          <div className="flex items-center gap-3">
+            <span className="h-px flex-1 bg-truffle/20 dark:bg-[#f6dfd0]/20" />
+            <span className="text-[11px] uppercase tracking-[0.12em] text-truffle/60 dark:text-[#f6dfd0]/60">or</span>
+            <span className="h-px flex-1 bg-truffle/20 dark:bg-[#f6dfd0]/20" />
+          </div>
+          <GoogleAuthButton
+            label="Continue with Google"
+            onClick={() => {
+              setIsGoogleLoading(true)
+              const target = `${apiBaseUrl}/api/auth/google?redirect=${encodeURIComponent(redirectTo)}`
+              window.location.assign(target)
+            }}
+          />
           <p className="text-center text-xs text-truffle/70 dark:text-[#f6dfd0]/70">
             New here?{' '}
             <Link to="/signup" className="font-medium text-cocoa underline-offset-2 hover:underline dark:text-[#f2cdb8]">
@@ -79,6 +134,10 @@ export function SignInPage() {
               <Link to={redirectTo}>Continue</Link>
             </Button>
           </div>
+        )}
+
+        {isGoogleLoading && (
+          <p className="text-center text-xs text-truffle/70 dark:text-[#f6dfd0]/70">Connecting to Google...</p>
         )}
       </section>
     </PageTransition>

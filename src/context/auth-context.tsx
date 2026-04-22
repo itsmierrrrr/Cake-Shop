@@ -14,6 +14,7 @@ type AuthContextValue = {
   isAuthenticated: boolean
   isHydrating: boolean
   signIn: (email: string, password: string) => Promise<void>
+  signInWithToken: (token: string) => Promise<void>
   signUp: (name: string, email: string, password: string) => Promise<SignUpResponse>
   signOut: () => void
 }
@@ -65,6 +66,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<AuthUser | null>(() => getInitialUser())
   const [token, setToken] = useState<string | null>(() => getInitialToken())
   const [isHydrating, setIsHydrating] = useState(true)
+
+  const applySession = (nextToken: string, nextUser: AuthUser) => {
+    setUser(nextUser)
+    setToken(nextToken)
+    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(nextUser))
+    localStorage.setItem(AUTH_TOKEN_KEY, nextToken)
+  }
 
   useEffect(() => {
     const hydrate = async () => {
@@ -129,10 +137,22 @@ export function AuthProvider({ children }: PropsWithChildren) {
     }
 
     const data = (await response.json()) as { token: string; user: AuthUser }
-    setUser(data.user)
-    setToken(data.token)
-    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(data.user))
-    localStorage.setItem(AUTH_TOKEN_KEY, data.token)
+    applySession(data.token, data.user)
+  }
+
+  const signInWithToken = async (nextToken: string) => {
+    const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+      headers: {
+        Authorization: `Bearer ${nextToken}`,
+      },
+    })
+
+    if (!response.ok) {
+      await parseApiError(response)
+    }
+
+    const data = (await response.json()) as { user: AuthUser }
+    applySession(nextToken, data.user)
   }
 
   const signOut = () => {
@@ -148,6 +168,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       isAuthenticated: Boolean(user),
       isHydrating,
       signIn,
+      signInWithToken,
       signUp,
       signOut,
     }),

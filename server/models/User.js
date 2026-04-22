@@ -15,9 +15,15 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true,
+      trim: true,
+    },
     passwordHash: {
       type: String,
-      required: true,
+      default: null,
     },
   },
   {

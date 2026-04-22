@@ -1,10 +1,41 @@
 import bcrypt from 'bcryptjs'
 import express from 'express'
+import { OAuth2Client } from 'google-auth-library'
 import jwt from 'jsonwebtoken'
 
 import { User } from '../models/User.js'
 
 const router = express.Router()
+
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173'
+
+function getSafeRedirectPath(path) {
+  if (typeof path !== 'string') {
+    return '/'
+  }
+
+  if (!path.startsWith('/') || path.startsWith('//')) {
+    return '/'
+  }
+
+  return path
+}
+
+function getGoogleOAuthClient() {
+  const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } = process.env
+
+  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !GOOGLE_CALLBACK_URL) {
+    throw new Error('Google OAuth is not configured on the server.')
+  }
+
+  return new OAuth2Client(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL)
+}
+
+function redirectToClientSignIn(res, params = new URLSearchParams()) {
+  const query = params.toString()
+  const target = `${CLIENT_ORIGIN}/signin${query ? `?${query}` : ''}`
+  return res.redirect(target)
+}
 
 function createToken(userId) {
   return jwt.sign({ sub: userId }, process.env.JWT_SECRET, { expiresIn: '7d' })
@@ -41,6 +72,10 @@ router.post('/signup', async (req, res) => {
   const normalizedEmail = email.trim().toLowerCase()
   const existing = await User.findOne({ email: normalizedEmail })
   if (existing) {
+    if (!existing.passwordHash && existing.googleId) {
+      return res.status(409).json({ message: 'This email is linked to Google. Please sign in with Google.' })
+    }
+
     return res.status(409).json({ message: 'Account already exists. Please sign in.' })
   }
 
@@ -68,6 +103,10 @@ router.post('/signin', async (req, res) => {
     return res.status(404).json({ message: 'No account found for this email. Please sign up.' })
   }
 
+  if (!user.passwordHash) {
+    return res.status(400).json({ message: 'This account uses Google sign-in. Continue with Google to sign in.' })
+  }
+
   const validPassword = await bcrypt.compare(password, user.passwordHash)
   if (!validPassword) {
     return res.status(401).json({ message: 'Incorrect password. Please try again.' })
@@ -78,6 +117,94 @@ router.post('/signin', async (req, res) => {
     token,
     user: { name: user.name, email: user.email },
   })
+})
+
+router.get('/google', (req, res) => {
+  try {
+    const client = getGoogleOAuthClient()
+    const redirectPath = getSafeRedirectPath(req.query.redirect)
+    const state = Buffer.from(JSON.stringify({ redirectPath }), 'utf8').toString('base64url')
+
+    const url = client.generateAuthUrl({
+      access_type: 'offline',
+      scope: ['openid', 'email', 'profile'],
+      prompt: 'select_account',
+      state,
+    })
+
+    return res.redirect(url)
+  } catch {
+    const params = new URLSearchParams({ error: 'google_not_configured' })
+    return redirectToClientSignIn(res, params)
+  }
+})
+
+router.get('/google/callback', async (req, res) => {
+  const errorParams = new URLSearchParams({ error: 'google_auth_failed' })
+
+  try {
+    const code = typeof req.query.code === 'string' ? req.query.code : ''
+    if (!code) {
+      return redirectToClientSignIn(res, errorParams)
+    }
+
+    const client = getGoogleOAuthClient()
+    const { tokens } = await client.getToken(code)
+
+    if (!tokens.id_token) {
+      return redirectToClientSignIn(res, errorParams)
+    }
+
+    const ticket = await client.verifyIdToken({
+      idToken: tokens.id_token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    })
+
+    const payload = ticket.getPayload()
+    const email = payload?.email?.toLowerCase()
+
+    if (!email || !payload?.sub || !payload.email_verified) {
+      return redirectToClientSignIn(res, errorParams)
+    }
+
+    let user = await User.findOne({ email })
+    const displayName = payload.name?.trim() || email.split('@')[0]
+
+    if (!user) {
+      user = await User.create({
+        name: displayName,
+        email,
+        googleId: payload.sub,
+      })
+    } else if (!user.googleId) {
+      user.googleId = payload.sub
+      if (!user.name?.trim()) {
+        user.name = displayName
+      }
+      await user.save()
+    }
+
+    let redirectPath = '/'
+    if (typeof req.query.state === 'string') {
+      try {
+        const parsed = JSON.parse(Buffer.from(req.query.state, 'base64url').toString('utf8'))
+        redirectPath = getSafeRedirectPath(parsed.redirectPath)
+      } catch {
+        redirectPath = '/'
+      }
+    }
+
+    const token = createToken(user.id)
+    const successParams = new URLSearchParams({
+      token,
+      redirect: redirectPath,
+      provider: 'google',
+    })
+
+    return redirectToClientSignIn(res, successParams)
+  } catch {
+    return redirectToClientSignIn(res, errorParams)
+  }
 })
 
 router.get('/me', authMiddleware, async (req, res) => {

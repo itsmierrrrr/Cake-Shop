@@ -48,6 +48,9 @@ copy .env.example .env
 - `JWT_SECRET` any strong secret value
 - `PORT` backend port (default `4000`)
 - `CLIENT_ORIGIN` frontend origin (default `http://localhost:5173`)
+- `GOOGLE_CLIENT_ID` OAuth client ID from Google Cloud Console
+- `GOOGLE_CLIENT_SECRET` OAuth client secret from Google Cloud Console
+- `GOOGLE_CALLBACK_URL` backend callback URL (example `http://localhost:4000/api/auth/google/callback`)
 
 4. Optional frontend env (`.env.local`):
 
@@ -94,6 +97,8 @@ Base URL: `http://localhost:4000/api/auth`
 
 - `POST /signup` create user account
 - `POST /signin` authenticate and return JWT + user info
+- `GET /google` start Google OAuth flow
+- `GET /google/callback` Google OAuth callback endpoint
 - `GET /me` return current user (requires `Authorization: Bearer <token>`)
 
 Health check endpoint: `GET /api/health`
