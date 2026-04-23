@@ -87,7 +87,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       }
 
       try {
-        const response = await fetch(`${API_BASE_URL}/api/profile`, {
+        const response = await fetch(`${API_BASE_URL}/api/auth/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -163,7 +163,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }
 
   const signInWithToken = async (nextToken: string) => {
-    const response = await fetch(`${API_BASE_URL}/api/profile`, {
+    const response = await fetch(`${API_BASE_URL}/api/auth/profile`, {
       headers: {
         Authorization: `Bearer ${nextToken}`,
       },
