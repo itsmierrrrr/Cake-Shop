@@ -7,100 +7,28 @@ import { User } from '../models/User.js'
 
 const router = express.Router()
 
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173'
-const DEFAULT_GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL || `${CLIENT_ORIGIN}/auth/google/callback`
-
-function getSafeRedirectPath(path) {
-  if (typeof path !== 'string') {
-    return '/'
-  }
-
-  if (!path.startsWith('/') || path.startsWith('//')) {
-    return '/'
-  }
-
-  return path
-}
-
-function getGoogleOAuthClient(redirectUri = DEFAULT_GOOGLE_CALLBACK_URL) {
-  const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env
-
-  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !redirectUri) {
-    throw new Error('Google OAuth is not configured on the server.')
-  }
-
-  return new OAuth2Client(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, redirectUri)
-}
-
-function parseGoogleState(state) {
-  if (typeof state !== 'string') {
-    return '/'
-  }
-
-  try {
-    const parsed = JSON.parse(Buffer.from(state, 'base64url').toString('utf8'))
-    return getSafeRedirectPath(parsed.redirectPath)
-  } catch {
-    return '/'
-  }
-}
-
-async function completeGoogleAuth({ code, state }) {
-  const client = getGoogleOAuthClient()
-  const { tokens } = await client.getToken(code)
-
-  if (!tokens.id_token) {
-    throw new Error('Missing id_token')
-  }
-
-  const ticket = await client.verifyIdToken({
-    idToken: tokens.id_token,
-    audience: process.env.GOOGLE_CLIENT_ID,
-  })
-
-  const payload = ticket.getPayload()
-  const email = payload?.email?.toLowerCase()
-
-  if (!email || !payload?.sub || !payload.email_verified) {
-    throw new Error('Google profile is invalid')
-  }
-
-  let user = await User.findOne({ email })
-  const displayName = payload.name?.trim() || email.split('@')[0]
-
-  if (!user) {
-    user = await User.create({
-      name: displayName,
-      email,
-      googleId: payload.sub,
-    })
-  } else if (!user.googleId) {
-    user.googleId = payload.sub
-    if (!user.name?.trim()) {
-      user.name = displayName
-    }
-    await user.save()
-  }
-
-  return {
-    token: createToken(user.id),
-    redirectPath: parseGoogleState(state),
-  }
-}
-
-function redirectToClientSignIn(res, params = new URLSearchParams()) {
-  const query = params.toString()
-  const target = `${CLIENT_ORIGIN}/signin${query ? `?${query}` : ''}`
-  return res.redirect(target)
-}
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+const googleClient = GOOGLE_CLIENT_ID ? new OAuth2Client(GOOGLE_CLIENT_ID) : null
 
 function createToken(userId) {
   return jwt.sign({ sub: userId }, process.env.JWT_SECRET, { expiresIn: '7d' })
 }
 
-function authMiddleware(req, res, next) {
+function toUserPayload(user) {
+  return {
+    name: user.name,
+    email: user.email,
+    avatar: user.avatar || null,
+  }
+}
+
+function getBearerToken(req) {
   const authHeader = req.headers.authorization || ''
-  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null
+  return authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null
+}
+
+function authMiddleware(req, res, next) {
+  const token = getBearerToken(req)
 
   if (!token) {
     return res.status(401).json({ message: 'Unauthorized' })
@@ -113,6 +41,64 @@ function authMiddleware(req, res, next) {
   } catch {
     return res.status(401).json({ message: 'Invalid or expired token' })
   }
+}
+
+async function verifyGoogleIdToken(idToken) {
+  if (!googleClient || !GOOGLE_CLIENT_ID) {
+    throw new Error('Google OAuth is not configured on the server.')
+  }
+
+  const ticket = await googleClient.verifyIdToken({
+    idToken,
+    audience: GOOGLE_CLIENT_ID,
+  })
+
+  const payload = ticket.getPayload()
+
+  if (!payload?.sub || !payload?.email || !payload.email_verified) {
+    throw new Error('Google profile is invalid.')
+  }
+
+  return payload
+}
+
+async function upsertGoogleUser(payload) {
+  const email = payload.email.toLowerCase()
+  const displayName = payload.name?.trim() || email.split('@')[0]
+  const avatar = payload.picture || null
+
+  let user = await User.findOne({ googleId: payload.sub })
+  let isNewUser = false
+
+  if (!user) {
+    user = await User.findOne({ email })
+  }
+
+  if (!user) {
+    user = await User.create({
+      name: displayName,
+      email,
+      googleId: payload.sub,
+      avatar,
+    })
+    isNewUser = true
+    return { user, isNewUser }
+  }
+
+  if (!user.googleId) {
+    user.googleId = payload.sub
+  }
+
+  if (!user.name?.trim()) {
+    user.name = displayName
+  }
+
+  if (!user.avatar && avatar) {
+    user.avatar = avatar
+  }
+
+  await user.save()
+  return { user, isNewUser }
 }
 
 router.post('/signup', async (req, res) => {
@@ -176,68 +162,42 @@ router.post('/signin', async (req, res) => {
   })
 })
 
-router.get('/google', (req, res) => {
+router.post('/google', async (req, res) => {
   try {
-    const client = getGoogleOAuthClient()
-    const redirectPath = getSafeRedirectPath(req.query.redirect)
-    const state = Buffer.from(JSON.stringify({ redirectPath }), 'utf8').toString('base64url')
+    const idToken = typeof req.body?.idToken === 'string' ? req.body.idToken.trim() : ''
 
-    const url = client.generateAuthUrl({
-      access_type: 'offline',
-      scope: ['openid', 'email', 'profile'],
-      prompt: 'select_account',
-      state,
-      redirect_uri: DEFAULT_GOOGLE_CALLBACK_URL,
-    })
-
-    return res.redirect(url)
-  } catch {
-    const params = new URLSearchParams({ error: 'google_not_configured' })
-    return redirectToClientSignIn(res, params)
-  }
-})
-
-router.post('/google/exchange', async (req, res) => {
-  try {
-    const code = typeof req.body?.code === 'string' ? req.body.code : ''
-    const state = typeof req.body?.state === 'string' ? req.body.state : ''
-
-    if (!code) {
-      return res.status(400).json({ message: 'Missing Google authorization code.' })
+    if (!idToken) {
+      return res.status(400).json({ message: 'Missing Google ID token.' })
     }
 
-    const result = await completeGoogleAuth({ code, state })
-    return res.status(200).json({
-      token: result.token,
-      redirect: result.redirectPath,
-      provider: 'google',
+    const payload = await verifyGoogleIdToken(idToken)
+    const { user, isNewUser } = await upsertGoogleUser(payload)
+    const token = createToken(user.id)
+
+    return res.status(isNewUser ? 201 : 200).json({
+      token,
+      user: toUserPayload(user),
+      isNewUser,
     })
   } catch {
     return res.status(400).json({ message: 'Google authentication failed.' })
   }
 })
 
-router.get('/google/callback', async (req, res) => {
-  const errorParams = new URLSearchParams({ error: 'google_auth_failed' })
-
-  try {
-    const code = typeof req.query.code === 'string' ? req.query.code : ''
-    const state = typeof req.query.state === 'string' ? req.query.state : ''
-    if (!code) {
-      return redirectToClientSignIn(res, errorParams)
-    }
-
-    const result = await completeGoogleAuth({ code, state })
-    const successParams = new URLSearchParams({
-      token: result.token,
-      redirect: result.redirectPath,
-      provider: 'google',
-    })
-
-    return redirectToClientSignIn(res, successParams)
-  } catch {
-    return redirectToClientSignIn(res, errorParams)
+router.get('/profile', authMiddleware, async (req, res) => {
+  const user = await User.findById(req.userId)
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' })
   }
+
+  return res.json({ user: toUserPayload(user) })
+})
+
+router.get('/data', authMiddleware, async (_req, res) => {
+  return res.json({
+    message: 'Protected data loaded successfully.',
+    items: ['Fresh cakes', 'Seasonal cakes', 'Order history'],
+  })
 })
 
 router.get('/me', authMiddleware, async (req, res) => {
@@ -246,7 +206,7 @@ router.get('/me', authMiddleware, async (req, res) => {
     return res.status(404).json({ message: 'User not found' })
   }
 
-  return res.json({ user: { name: user.name, email: user.email } })
+  return res.json({ user: toUserPayload(user) })
 })
 
 export default router

@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema(
       sparse: true,
       trim: true,
     },
+    avatar: {
+      type: String,
+      default: null,
+      trim: true,
+    },
     passwordHash: {
       type: String,
       default: null,

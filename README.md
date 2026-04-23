@@ -50,7 +50,7 @@ copy .env.example .env
 - `CLIENT_ORIGIN` frontend origin (default `http://localhost:5173`)
 - `GOOGLE_CLIENT_ID` OAuth client ID from Google Cloud Console
 - `GOOGLE_CLIENT_SECRET` OAuth client secret from Google Cloud Console
-- `GOOGLE_CALLBACK_URL` frontend callback URL (example `http://localhost:5173/auth/google/callback`)
+- `VITE_GOOGLE_CLIENT_ID` frontend Google Identity Services client ID
 
 4. Optional frontend env (`.env.local`):
 
@@ -97,10 +97,13 @@ Base URL: `http://localhost:4000/api/auth`
 
 - `POST /signup` create user account
 - `POST /signin` authenticate and return JWT + user info
-- `GET /google` start Google OAuth flow
-- `POST /google/exchange` exchange Google auth code for JWT
-- `GET /google/callback` legacy backend callback endpoint (still supported)
+- `POST /google` verify frontend Google ID token and return JWT + user info
 - `GET /me` return current user (requires `Authorization: Bearer <token>`)
+
+Protected API examples:
+
+- `GET /api/profile` return current user profile (requires JWT)
+- `GET /api/data` example protected data endpoint (requires JWT)
 
 Health check endpoint: `GET /api/health`
 

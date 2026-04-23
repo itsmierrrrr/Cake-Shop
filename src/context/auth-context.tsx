@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react'
 
-import type { AuthUser, SignUpResponse } from '@/types/auth'
+import type { AuthSessionResponse, AuthUser, SignUpResponse } from '@/types/auth'
 
 type AuthContextValue = {
   user: AuthUser | null
@@ -15,6 +15,7 @@ type AuthContextValue = {
   isHydrating: boolean
   signIn: (email: string, password: string) => Promise<void>
   signInWithToken: (token: string) => Promise<void>
+  signInWithGoogle: (idToken: string) => Promise<void>
   signUp: (name: string, email: string, password: string) => Promise<SignUpResponse>
   signOut: () => void
 }
@@ -75,6 +76,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }
 
   useEffect(() => {
+    void fetch(`${API_BASE_URL}/api/health`).catch(() => {
+      // Best-effort warmup for cold Render instances.
+    })
+
     const hydrate = async () => {
       if (!token) {
         setIsHydrating(false)
@@ -82,7 +87,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       }
 
       try {
-        const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+        const response = await fetch(`${API_BASE_URL}/api/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -140,8 +145,25 @@ export function AuthProvider({ children }: PropsWithChildren) {
     applySession(data.token, data.user)
   }
 
+  const signInWithGoogle = async (idToken: string) => {
+    const response = await fetch(`${API_BASE_URL}/api/auth/google`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ idToken }),
+    })
+
+    if (!response.ok) {
+      await parseApiError(response)
+    }
+
+    const data = (await response.json()) as AuthSessionResponse & { isNewUser?: boolean }
+    applySession(data.token, data.user)
+  }
+
   const signInWithToken = async (nextToken: string) => {
-    const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+    const response = await fetch(`${API_BASE_URL}/api/profile`, {
       headers: {
         Authorization: `Bearer ${nextToken}`,
       },
@@ -169,6 +191,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       isHydrating,
       signIn,
       signInWithToken,
+      signInWithGoogle,
       signUp,
       signOut,
     }),
