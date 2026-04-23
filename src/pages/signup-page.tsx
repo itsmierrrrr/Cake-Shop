@@ -56,8 +56,6 @@ export function SignUpPage() {
           <p className="section-copy">Create your account to sign in and place orders.</p>
         </div>
 
-        <GoogleAuthButton label="Continue with Google" onCredential={handleGoogleCredential} />
-
         <form onSubmit={handleSignUp} className="glass-card space-y-4 p-6">
           <Input
             required
@@ -82,6 +80,12 @@ export function SignUpPage() {
           <Button type="submit" className="w-full">
             Sign Up
           </Button>
+          <div className="flex items-center gap-3 py-1">
+            <span className="h-px flex-1 bg-truffle/20 dark:bg-[#f6dfd0]/20" />
+            <span className="text-[11px] uppercase tracking-[0.14em] text-truffle/60 dark:text-[#f6dfd0]/60">or</span>
+            <span className="h-px flex-1 bg-truffle/20 dark:bg-[#f6dfd0]/20" />
+          </div>
+          <GoogleAuthButton label="Continue with Google" onCredential={handleGoogleCredential} />
           <p className="text-center text-xs text-truffle/70 dark:text-[#f6dfd0]/70">
             Already have an account?{' '}
             <Link to="/signin" className="font-medium text-cocoa underline-offset-2 hover:underline dark:text-[#f2cdb8]">
