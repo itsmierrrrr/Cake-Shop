@@ -8,6 +8,7 @@ import { AboutPage } from '@/pages/about-page'
 import { CartPage } from '@/pages/cart-page'
 import { CheckoutPage } from '@/pages/checkout-page'
 import { ContactPage } from '@/pages/contact-page'
+import { GoogleCallbackPage } from '@/pages/google-callback-page'
 import { HomePage } from '@/pages/home-page'
 import { NotFoundPage } from '@/pages/not-found-page'
 import { ProductDetailsPage } from '@/pages/product-details-page'
@@ -38,6 +39,7 @@ function App() {
               }
             />
             <Route path="/signin" element={<SignInPage />} />
+            <Route path="/auth/google/callback" element={<GoogleCallbackPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />

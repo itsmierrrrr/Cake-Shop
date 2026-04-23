@@ -8,6 +8,7 @@ import { User } from '../models/User.js'
 const router = express.Router()
 
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173'
+const DEFAULT_GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL || `${CLIENT_ORIGIN}/auth/google/callback`
 
 function getSafeRedirectPath(path) {
   if (typeof path !== 'string') {
@@ -21,14 +22,70 @@ function getSafeRedirectPath(path) {
   return path
 }
 
-function getGoogleOAuthClient() {
-  const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } = process.env
+function getGoogleOAuthClient(redirectUri = DEFAULT_GOOGLE_CALLBACK_URL) {
+  const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env
 
-  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !GOOGLE_CALLBACK_URL) {
+  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !redirectUri) {
     throw new Error('Google OAuth is not configured on the server.')
   }
 
-  return new OAuth2Client(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL)
+  return new OAuth2Client(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, redirectUri)
+}
+
+function parseGoogleState(state) {
+  if (typeof state !== 'string') {
+    return '/'
+  }
+
+  try {
+    const parsed = JSON.parse(Buffer.from(state, 'base64url').toString('utf8'))
+    return getSafeRedirectPath(parsed.redirectPath)
+  } catch {
+    return '/'
+  }
+}
+
+async function completeGoogleAuth({ code, state }) {
+  const client = getGoogleOAuthClient()
+  const { tokens } = await client.getToken(code)
+
+  if (!tokens.id_token) {
+    throw new Error('Missing id_token')
+  }
+
+  const ticket = await client.verifyIdToken({
+    idToken: tokens.id_token,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  })
+
+  const payload = ticket.getPayload()
+  const email = payload?.email?.toLowerCase()
+
+  if (!email || !payload?.sub || !payload.email_verified) {
+    throw new Error('Google profile is invalid')
+  }
+
+  let user = await User.findOne({ email })
+  const displayName = payload.name?.trim() || email.split('@')[0]
+
+  if (!user) {
+    user = await User.create({
+      name: displayName,
+      email,
+      googleId: payload.sub,
+    })
+  } else if (!user.googleId) {
+    user.googleId = payload.sub
+    if (!user.name?.trim()) {
+      user.name = displayName
+    }
+    await user.save()
+  }
+
+  return {
+    token: createToken(user.id),
+    redirectPath: parseGoogleState(state),
+  }
 }
 
 function redirectToClientSignIn(res, params = new URLSearchParams()) {
@@ -130,6 +187,7 @@ router.get('/google', (req, res) => {
       scope: ['openid', 'email', 'profile'],
       prompt: 'select_account',
       state,
+      redirect_uri: DEFAULT_GOOGLE_CALLBACK_URL,
     })
 
     return res.redirect(url)
@@ -139,65 +197,40 @@ router.get('/google', (req, res) => {
   }
 })
 
+router.post('/google/exchange', async (req, res) => {
+  try {
+    const code = typeof req.body?.code === 'string' ? req.body.code : ''
+    const state = typeof req.body?.state === 'string' ? req.body.state : ''
+
+    if (!code) {
+      return res.status(400).json({ message: 'Missing Google authorization code.' })
+    }
+
+    const result = await completeGoogleAuth({ code, state })
+    return res.status(200).json({
+      token: result.token,
+      redirect: result.redirectPath,
+      provider: 'google',
+    })
+  } catch {
+    return res.status(400).json({ message: 'Google authentication failed.' })
+  }
+})
+
 router.get('/google/callback', async (req, res) => {
   const errorParams = new URLSearchParams({ error: 'google_auth_failed' })
 
   try {
     const code = typeof req.query.code === 'string' ? req.query.code : ''
+    const state = typeof req.query.state === 'string' ? req.query.state : ''
     if (!code) {
       return redirectToClientSignIn(res, errorParams)
     }
 
-    const client = getGoogleOAuthClient()
-    const { tokens } = await client.getToken(code)
-
-    if (!tokens.id_token) {
-      return redirectToClientSignIn(res, errorParams)
-    }
-
-    const ticket = await client.verifyIdToken({
-      idToken: tokens.id_token,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    })
-
-    const payload = ticket.getPayload()
-    const email = payload?.email?.toLowerCase()
-
-    if (!email || !payload?.sub || !payload.email_verified) {
-      return redirectToClientSignIn(res, errorParams)
-    }
-
-    let user = await User.findOne({ email })
-    const displayName = payload.name?.trim() || email.split('@')[0]
-
-    if (!user) {
-      user = await User.create({
-        name: displayName,
-        email,
-        googleId: payload.sub,
-      })
-    } else if (!user.googleId) {
-      user.googleId = payload.sub
-      if (!user.name?.trim()) {
-        user.name = displayName
-      }
-      await user.save()
-    }
-
-    let redirectPath = '/'
-    if (typeof req.query.state === 'string') {
-      try {
-        const parsed = JSON.parse(Buffer.from(req.query.state, 'base64url').toString('utf8'))
-        redirectPath = getSafeRedirectPath(parsed.redirectPath)
-      } catch {
-        redirectPath = '/'
-      }
-    }
-
-    const token = createToken(user.id)
+    const result = await completeGoogleAuth({ code, state })
     const successParams = new URLSearchParams({
-      token,
-      redirect: redirectPath,
+      token: result.token,
+      redirect: result.redirectPath,
       provider: 'google',
     })
 

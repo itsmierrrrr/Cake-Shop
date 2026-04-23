@@ -69,7 +69,7 @@ export function FilterBar({
       </label>
 
       <label className="space-y-2 text-sm text-truffle/80 dark:text-[#f6dfd0]/80">
-        Max Price: ${maxPrice}
+        Max Price: ₹{maxPrice}
         <input
           type="range"
           min={20}
