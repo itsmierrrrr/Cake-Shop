@@ -13,11 +13,13 @@ import { useDocumentTitle } from '@/hooks/use-document-title'
 import { formatCurrency } from '@/utils/currency'
 import upiRandomQr from '@/assets/Googlepay qr.jpeg'
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+
 export function CheckoutPage() {
   useDocumentTitle('Checkout')
 
   const navigate = useNavigate()
-  const { isAuthenticated, user } = useAuth()
+  const { isAuthenticated, user, token } = useAuth()
   const { items, subtotal, clearCart } = useCart()
   const [payment, setPayment] = useState<'bank' | 'upi' | null>(null)
 
@@ -52,9 +54,36 @@ export function CheckoutPage() {
       return
     }
 
-    toast.success('Order placed successfully. Fresh sweetness is on its way!')
-    clearCart()
-    navigate('/')
+    const payload = {
+      items: items.map((it) => ({ cakeId: it.cake.id, name: it.cake.name, price: it.cake.price, quantity: it.quantity })),
+      subtotal,
+      shipping,
+      paymentMethod: payment,
+    }
+
+    void (async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/auth/orders`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token ? `Bearer ${token}` : '',
+          },
+          body: JSON.stringify(payload),
+        })
+
+        if (!response.ok) {
+          toast.error('Failed to place order. Please try again.')
+          return
+        }
+
+        toast.success('Order placed successfully. Fresh sweetness is on its way!')
+        clearCart()
+        navigate('/orders')
+      } catch (err) {
+        toast.error('Failed to place order. Please try again.')
+      }
+    })()
   }
 
   return (

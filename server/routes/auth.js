@@ -4,6 +4,7 @@ import { OAuth2Client } from 'google-auth-library'
 import jwt from 'jsonwebtoken'
 
 import { User } from '../models/User.js'
+import { Order } from '../models/Order.js'
 
 const router = express.Router()
 
@@ -207,6 +208,38 @@ router.get('/me', authMiddleware, async (req, res) => {
   }
 
   return res.json({ user: toUserPayload(user) })
+})
+
+router.post('/orders', authMiddleware, async (req, res) => {
+  try {
+    const { items, subtotal, shipping, paymentMethod } = req.body
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ message: 'Order must include at least one item.' })
+    }
+
+    const order = await Order.create({
+      userId: req.userId,
+      items,
+      subtotal: Number(subtotal) || 0,
+      shipping: Number(shipping) || 0,
+      total: Number(subtotal || 0) + Number(shipping || 0),
+      paymentMethod: paymentMethod || null,
+    })
+
+    return res.status(201).json({ order })
+  } catch (err) {
+    return res.status(500).json({ message: 'Failed to create order.' })
+  }
+})
+
+router.get('/orders', authMiddleware, async (req, res) => {
+  try {
+    const orders = await Order.find({ userId: req.userId }).sort({ createdAt: -1 })
+    return res.json({ orders })
+  } catch (err) {
+    return res.status(500).json({ message: 'Failed to load orders.' })
+  }
 })
 
 export default router

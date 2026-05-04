@@ -13,6 +13,7 @@ type AuthContextValue = {
   user: AuthUser | null
   isAuthenticated: boolean
   isHydrating: boolean
+  token?: string | null
   signIn: (email: string, password: string) => Promise<void>
   signInWithToken: (token: string) => Promise<void>
   signInWithGoogle: (idToken: string) => Promise<void>
@@ -188,6 +189,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     () => ({
       user,
       isAuthenticated: Boolean(user),
+      token,
       isHydrating,
       signIn,
       signInWithToken,
@@ -195,7 +197,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       signUp,
       signOut,
     }),
-    [isHydrating, user],
+    [isHydrating, user, token],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

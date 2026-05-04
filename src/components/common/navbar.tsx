@@ -48,6 +48,19 @@ export function Navbar() {
               {link.label}
             </NavLink>
           ))}
+          {isAuthenticated && (
+            <NavLink
+              to="/orders"
+              className={({ isActive }) =>
+                cn(
+                  'rounded-full px-4 py-2 text-sm text-truffle/80 transition hover:bg-white/75 dark:text-[#f6dfd0]/80 dark:hover:bg-white/10',
+                  isActive && 'bg-white text-truffle shadow-soft dark:bg-white/20 dark:text-[#f6dfd0]',
+                )
+              }
+            >
+              Orders
+            </NavLink>
+          )}
         </nav>
 
         <div className="flex items-center gap-2">
@@ -114,6 +127,19 @@ export function Navbar() {
             {link.label}
           </NavLink>
         ))}
+        {isAuthenticated ? (
+          <NavLink
+            to="/orders"
+            className={({ isActive }) =>
+              cn(
+                'rounded-full border border-rose/30 px-3 py-1 text-xs text-truffle/80 dark:border-white/20 dark:text-[#f6dfd0]/80',
+                isActive && 'bg-white dark:bg-white/15',
+              )
+            }
+          >
+            Orders
+          </NavLink>
+        ) : null}
       </div>
     </header>
   )

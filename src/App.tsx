@@ -7,6 +7,7 @@ import { RequireAuth } from '@/components/common/require-auth'
 import { AboutPage } from '@/pages/about-page'
 import { CartPage } from '@/pages/cart-page'
 import { CheckoutPage } from '@/pages/checkout-page'
+import { OrdersPage } from '@/pages/orders-page'
 import { ContactPage } from '@/pages/contact-page'
 import { HomePage } from '@/pages/home-page'
 import { NotFoundPage } from '@/pages/not-found-page'
@@ -34,6 +35,14 @@ function App() {
               element={
                 <RequireAuth>
                   <CheckoutPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/orders"
+              element={
+                <RequireAuth>
+                  <OrdersPage />
                 </RequireAuth>
               }
             />
