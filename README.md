@@ -13,14 +13,14 @@ A modern cake shop web app with a React + Vite frontend and a lightweight Expres
 
 ## Features
 
-- Responsive storefront with Home, Shop, Product Details, Cart, Checkout, About, and Contact pages
-- Client-side filtering in shop (category, flavor, and max price)
-- Cart state management with Context API and quantity controls
-- Light and dark theme toggle with persistence
-- Route transition animations and loading skeletons
-- Auth flow with Sign Up, Sign In, and token-based session restore
-- Protected checkout route that redirects unauthenticated users to Sign In
-- Frontend product catalog from local data (`src/data/cakes.ts`)
+- Fully responsive storefront with Home, Shop, Product Details, Cart, Wishlist, Checkout, About, Contact, and FAQ pages
+- Advanced client-side filtering with category, flavor, price range, sorting, and instant search functionality
+- Smart cart state management using Context API with quantity controls, persistent storage, and animated cart interactions
+- Light, dark, and system theme toggle with seamless persistence and smooth UI transitions
+- Modern route transition animations, loading skeletons, staggered reveals, and micro-interactions using Framer Motion
+- Complete authentication flow with Sign Up, Sign In, Forgot Password, form validation, and token-based session restore
+- Secure protected checkout route redirecting unauthenticated users to Sign In while preserving navigation state
+- Dynamic frontend product catalog powered by local TypeScript data (src/data/cakes.ts) with scalable architecture for future API integration
 
 ## Prerequisites
 
