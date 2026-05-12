@@ -44,22 +44,6 @@ copy .env.example .env
 
 3. Update `.env` values:
 
-- `MONGODB_URI` your MongoDB connection string
-- `JWT_SECRET` any strong secret value
-- `PORT` backend port (default `4000`)
-- `CLIENT_ORIGIN` frontend origin (default `http://localhost:5173`)
-- `GOOGLE_CLIENT_ID` OAuth client ID from Google Cloud Console
-- `GOOGLE_CLIENT_SECRET` OAuth client secret from Google Cloud Console
-- `VITE_GOOGLE_CLIENT_ID` frontend Google Identity Services client ID
-
-4. Optional frontend env (`.env.local`):
-
-```bash
-VITE_API_URL=http://localhost:4000
-```
-
-If `VITE_API_URL` is not set, the frontend defaults to `http://localhost:4000`.
-
 ## Run
 
 Start frontend only:
