@@ -39,7 +39,7 @@ npm install
 2. Create backend env file from template:
 
 ```bash
-copy .env.example .env
+copy .env.example
 ```
 
 3. Update `.env` values:
