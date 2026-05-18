@@ -109,7 +109,7 @@ export function Navbar() {
       </div>
       {isAuthenticated && user ? (
         <div className="mx-auto w-full max-w-7xl px-4 pb-2 text-right text-xs text-truffle/70 sm:px-6 lg:px-8 dark:text-[#f6dfd0]/70">
-          Signed in ass {user.name}
+          Signed in as {user.name}
         </div>
       ) : null}
       <div className="mx-auto flex w-full max-w-7xl gap-2 overflow-x-auto px-4 pb-3 md:hidden sm:px-6 lg:px-8">
