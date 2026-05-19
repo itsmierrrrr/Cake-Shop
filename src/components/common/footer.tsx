@@ -23,7 +23,7 @@ export function Footer() {
           <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-truffle dark:hover:text-[#f6dfd0]">
             <FaXTwitter size={20} />
           </a>
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-truffle dark:hover:text-[#f6dfd0]">
+          <a href="#https://facebook.com" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-truffle dark:hover:text-[#f6dfd0]">
             <Facebook size={20} />
           </a>
         </div>
