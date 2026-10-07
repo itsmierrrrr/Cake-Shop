@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cakes } from '@/data/cakes'
 import { useDocumentTitle } from '@/hooks/use-document-title'
+import lanamodel from '@/assets/lanamodel.png'
 
 const testimonials = [
   {
@@ -129,7 +130,7 @@ export function HomePage() {
           transition={{ delay: 0.15 }}
         >
           <img
-            src="https://plus.unsplash.com/premium_photo-1673792686366-27a26e9d5ea5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src={lanamodel}
             alt="Featured boutique cake display"
             loading="lazy"
             className="h-[380px] w-full object-cover"
