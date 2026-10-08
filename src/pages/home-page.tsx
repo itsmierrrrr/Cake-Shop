@@ -14,7 +14,7 @@ import lanamodel from '@/assets/lanamodel.png'
 
 const testimonials = [
   {
-    name: 'Sophia M.',
+    name: 'Lana R.',
     note: 'Royale Bakes made our engagement party unforgettable. Every detail was gorgeous.',
     rating: 5,
   },
