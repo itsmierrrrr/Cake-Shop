@@ -19,7 +19,7 @@ const testimonials = [
     rating: 5,
   },
   {
-    name: 'The Parkers',
+    name: 'The Sawants',
     note: 'The wedding cake looked like art and tasted incredibly balanced and fresh.',
     rating: 5,
   },
