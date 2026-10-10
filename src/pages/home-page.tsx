@@ -24,7 +24,7 @@ const testimonials = [
     rating: 5,
   },
   {
-    name: 'Nina R.',
+    name: 'N. Modi',
     note: 'Their mini cakes are my go-to gift. Beautiful packaging and premium flavor.',
     rating: 4.8,
   },
