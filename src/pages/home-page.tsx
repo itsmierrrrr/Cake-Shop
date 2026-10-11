@@ -259,7 +259,7 @@ export function HomePage() {
           <h2 className="section-title">A Bakery Built on Slow Craft</h2>
           <p className="section-copy mt-3">
             We bake in small batches every morning with premium dairy, seasonal fruits, and
-            balanced sweetness profiles. Every cake is hand-finished by our pastry artists.
+            low sweetness profiles. Every cake is hand-finished by our pastry artists.
           </p>
           <Button asChild className="mt-6">
             <Link to="/about">Read More</Link>
